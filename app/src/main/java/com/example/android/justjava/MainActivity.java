@@ -34,8 +34,28 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        String priceMessage = "Total: $" + (quantity * 5) + "\nThank you!";
-        displayMessage(priceMessage);
+        int price = calculatePrice();
+        displayMessage(createOrderSummary(price));
+    }
+
+    /**
+     * Calculates the price of the order.
+     *
+     * @return total price.
+     */
+    private int calculatePrice() {
+        return quantity * 5;
+    }
+
+    /**
+     * Create summary of the order.
+     *
+     * @param price of the order.
+     * @return order summary.
+     */
+    private String createOrderSummary(int price) {
+        String orderSummary = "Name:Kaptain Kunal\nQuantity:" + quantity + "\nTotal: $" + price + "\nThank you!";
+        return orderSummary;
     }
 
     /**
