@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -23,7 +24,7 @@ import androidx.appcompat.app.AppCompatActivity;
  */
 public class MainActivity extends AppCompatActivity {
 
-    int quantity = 2;
+    int quantity = 99;
 
 
     @Override
@@ -113,6 +114,11 @@ public class MainActivity extends AppCompatActivity {
      * This method increments the quantity on the screen.
      */
     public void increment(View view) {
+        if (quantity == 100) {
+            // Show an error message as a toast.
+            Toast.makeText(this,"You cannot have more than 100 coffees.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         quantity = quantity + 1;
         display(quantity);
     }
@@ -121,6 +127,11 @@ public class MainActivity extends AppCompatActivity {
      * This method decrements the quantity on the screen.
      */
     public void decrement(View view) {
+        if (quantity == 1){
+            // Show an error message as a toast.
+            Toast.makeText(this, "You cannot have less than 1 coffee.", Toast.LENGTH_SHORT).show();
+            return;
+        }
         quantity = quantity - 1;
         display(quantity);
     }
