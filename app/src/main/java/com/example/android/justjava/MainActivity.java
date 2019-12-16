@@ -9,6 +9,8 @@
 package com.example.android.justjava;
 
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.text.Editable;
 import android.view.View;
@@ -37,19 +39,27 @@ public class MainActivity extends AppCompatActivity {
      * This method is called when the order button is clicked.
      */
     public void submitOrder(View view) {
-        CheckBox isWhippedCream = findViewById(R.id.whipped_cream_checkBox);
-        boolean hasWhippedCream = isWhippedCream.isChecked();
-
-        CheckBox chocolate = findViewById(R.id.chocolate_checkBox);
-        boolean hasChocolate = chocolate.isChecked();
-
+        // Find the users name.
         EditText name = findViewById(R.id.name_edit_text_view);
         Editable customer = name.getText();
 
+        // Figure out if the user wants whipped cream topping
+        CheckBox isWhippedCream = findViewById(R.id.whipped_cream_checkBox);
+        boolean hasWhippedCream = isWhippedCream.isChecked();
+
+        // figure out if the user wants chocolate topping
+        CheckBox chocolate = findViewById(R.id.chocolate_checkBox);
+        boolean hasChocolate = chocolate.isChecked();
+
         int price = calculatePrice(hasWhippedCream, hasChocolate);
+        CharSequence body = createOrderSummary(price, hasWhippedCream, hasChocolate, customer);
 
-        displayMessage(createOrderSummary(price, hasWhippedCream, hasChocolate, customer));
-
+        Intent intent = new Intent(Intent.ACTION_SENDTO);
+        intent.setData(Uri.parse("mailto:")); // only email apps should handle this
+        intent.putExtra(Intent.EXTRA_TEXT, body);
+        if (intent.resolveActivity(getPackageManager()) != null) {
+            startActivity(intent);
+        }
     }
 
     /**
@@ -100,14 +110,6 @@ public class MainActivity extends AppCompatActivity {
     private void display(int number) {
         TextView quantityTextView = (TextView) findViewById(R.id.quantity_text_view);
         quantityTextView.setText("" + number);
-    }
-
-    /**
-     * This method displays the given text on the screen.
-     */
-    private void displayMessage(String message) {
-        TextView orderSummaryTextView= (TextView) findViewById(R.id.order_summary_text_view);
-        orderSummaryTextView.setText(message);
     }
 
     /**
